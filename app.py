@@ -2,6 +2,7 @@ import web
 import jsonrenderer
 import errorhandlers
 import birdie
+import conf
 
 urls = (
 	"/", "Index",

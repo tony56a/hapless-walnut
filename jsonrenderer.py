@@ -1,12 +1,13 @@
 import json
+import conf
 
 RESULTGOOD = 'success'
 RESULTFAILED= 'failed'
 ERROR = 'error'
 VALUE = 'value'
 
-defaultResponse = { 'result': RESULTGOOD, VALUE:{} }
-errorResponse = { 'result': RESULTFAILED, ERROR: 'Stuff.' }
+defaultResponse = { 'version': conf.config['version'], 'result': RESULTGOOD, VALUE:{} }
+errorResponse = { 'version': conf.config['version'], 'result': RESULTFAILED, ERROR: 'Stuff.' }
 
 def renderResponse( data ):
 	returnValue = defaultResponse
