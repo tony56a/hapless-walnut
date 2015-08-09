@@ -1,12 +1,20 @@
 import web
-import json
+import jsonrenderer
+import errorhandlers
+import birdie
 
-urls = ("/.*", "hello")
-app = web.application(urls, globals())
+urls = (
+	"/", "Index",
+	'/birdie/rest', birdie.application
+)
 
-class hello:
+class Index:
     def GET(self):
-        return json.dumps( 'Hello, world!' )
+        return jsonrenderer.renderResponse( 'Hello, world!' )
+
+app = web.application(urls, globals())
+app.notfound = errorhandlers.notFound
+app.internalerror = errorhandlers.internalError
 
 if __name__ == "__main__":
     app.run()
