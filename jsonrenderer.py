@@ -1,12 +1,12 @@
 import json
 
-RESULTGOOD = 'Success'
-RESULTFAILED= 'Failed'
-ERROR = 'Error'
-VALUE = 'Value'
+RESULTGOOD = 'success'
+RESULTFAILED= 'failed'
+ERROR = 'error'
+VALUE = 'value'
 
-defaultResponse = { 'Result': RESULTGOOD, VALUE:{} }
-errorResponse = { 'Result': RESULTFAILED, ERROR: 'Stuff.' }
+defaultResponse = { 'result': RESULTGOOD, VALUE:{} }
+errorResponse = { 'result': RESULTFAILED, ERROR: 'Stuff.' }
 
 def renderResponse( data ):
 	returnValue = defaultResponse

@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS topics(
+	name TEXT PRIMARY KEY,
+	url TEXT
+);

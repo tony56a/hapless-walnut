@@ -1,22 +1,38 @@
 import web
 import jsonrenderer
+import dbhandler
 
 urls = (
 	"/topics", "AccessTopics",
+	"/(.*)", "ModifyTopics",
 	"/topics/load", "LoadTopics"
 )
 
 class AccessTopics:
 	def GET( self ):
-		return jsonrenderer.renderResponse( [
-			web.input(),[ 'a','b','c','d']] )
+		topic = None
+		if( 'query' in web.input().keys() ):
+			topic = web.input()[ 'query' ]
+		returnValue = dbhandler.queryEntries( topic )
+		if type( returnValue ) is str:
+			return jsonrenderer.renderError( returnValue )
+		else:
+			return jsonrenderer.renderResponse( { 'topics': returnValue } )
+	
+class ModifyTopics:
+	def POST( self, topicName ):		
+		returnValue = dbhandler.addEntry( topicName ) 
+		if returnValue is None:
+			return jsonrenderer.renderResponse( { 'added': topicName } )
+		else:
+			return jsonrenderer.renderError( returnValue )
 
-	def POST( self ):
-		return jsonrenderer.renderResponse( web.input() )
-
-
-	def DELETE( self ):
-		return jsonrenderer.renderResponse( "Deleted: " )
+	def DELETE( self, topicName ):
+		returnValue = dbhandler.removeEntry( topicName )
+		if returnValue is None:
+			return jsonrenderer.renderResponse( { 'deleted': topicName } )
+		else:
+			return jsonrenderer.renderError( returnValue )
 
 class LoadTopics:
 	def GET( self ):
