@@ -1,11 +1,13 @@
 import web
 import jsonrenderer
 import dbhandler
+import webrequest
 
 urls = (
+	"/topics/load", "LoadTopics",
 	"/topics", "AccessTopics",
-	"/(.*)", "ModifyTopics",
-	"/topics/load", "LoadTopics"
+	"/(.*)", "ModifyTopics"
+
 )
 
 class AccessTopics:
@@ -36,7 +38,16 @@ class ModifyTopics:
 
 class LoadTopics:
 	def GET( self ):
-		return jsonrenderer.renderResponse( 
-			"Update DB/storage here" )
+		trendingTopics = webrequest.getTrendingTopics()
+		if type( trendingTopics ) is str:
+			return jsonrenderer.renderError( returnValue )
+		else:
+			numTopicsLoaded = 0
+			for topic in trendingTopics:
+				addEntryReturnValue = dbhandler.addEntry( topic[ 'name' ], topic[ 'url' ] ) 
+				if addEntryReturnValue is None:
+					numTopicsLoaded += 1
+					
+			return jsonrenderer.renderResponse( { 'numtopicsloaded': numTopicsLoaded } )
 
 application = web.application(urls, locals())

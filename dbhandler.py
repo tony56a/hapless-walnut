@@ -14,17 +14,24 @@ def addEntry( topic, url=None ):
 		web.debug( e )
 		return "Error during operation"
 
-def queryEntries( topic ):
+def queryEntries( topic, showURLs=False ):
 	try:
 		returnValue = []
 		queryResult = None
+
 		if topic:
 			params = dict(name=topic+'%')
 			queryResult = db.select('topics', params, where="name LIKE $name", limit=50)
 		else:
 			queryResult = db.select( "topics", limit=50)
-		for value in queryResult:
-			returnValue.append( dict(value) )
+
+		if returnValue:
+			for value in queryResult:
+				returnValue.append( dict( value ) )
+		else:
+			for value in queryResult:
+				returnValue.append( value.name )
+
 		return returnValue
 	except OperationalError as e:
 		web.debug( e )
