@@ -14,16 +14,18 @@ def addEntry( topic, url=None ):
 		web.debug( e )
 		return "Error during operation"
 
-def queryEntries( topic, showURLs=False ):
+def queryEntries( topic, page, showURLs=False ):
 	try:
 		returnValue = []
 		queryResult = None
 
+		page = page * 10
 		if topic:
 			params = dict(name=topic+'%')
-			queryResult = db.select('topics', params, where="name LIKE $name", limit=50)
+			queryResult = db.select('topics', params, where="name LIKE $name", 
+				limit= str( page ) + ',10' )
 		else:
-			queryResult = db.select( "topics", limit=50)
+			queryResult = db.select( "topics", limit= str( page ) + ',10' )
 
 		if returnValue:
 			for value in queryResult:

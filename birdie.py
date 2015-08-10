@@ -13,9 +13,16 @@ urls = (
 class AccessTopics:
 	def GET( self ):
 		topic = None
+		page = 0
 		if( 'query' in web.input().keys() ):
 			topic = web.input()[ 'query' ]
-		returnValue = dbhandler.queryEntries( topic )
+		if( 'page' in web.input().keys() ):
+			try:
+				print web.input()['page']
+				page = int( web.input()[ 'page' ] )
+			except ValueError:
+				page = 0
+		returnValue = dbhandler.queryEntries( topic, page )
 		if type( returnValue ) is str:
 			return jsonrenderer.renderError( returnValue )
 		else:
@@ -47,7 +54,7 @@ class LoadTopics:
 				addEntryReturnValue = dbhandler.addEntry( topic[ 'name' ], topic[ 'url' ] ) 
 				if addEntryReturnValue is None:
 					numTopicsLoaded += 1
-					
+
 			return jsonrenderer.renderResponse( { 'numtopicsloaded': numTopicsLoaded } )
 
 application = web.application(urls, locals())
