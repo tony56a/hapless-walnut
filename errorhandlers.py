@@ -1,3 +1,7 @@
+"""
+Handlers for uncaught errors( 404 and 500( general failure ) )
+"""
+
 import web
 import jsonrenderer
 
